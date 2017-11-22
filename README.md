@@ -5,9 +5,9 @@
 TO-DO LIST
 ------------------------------------------------------------------------
 * Populate CCF matrices for vg1-4, vh1-3 and vs1-3 (Other group)
-* Consolidate into vg, vh and vs
+* Consolidate into vg, vh and vs (Other Group)
 * Weighting values for W and w (should be same as the ones used in paper- discuss with group)
-* Use a nested for loop structure to convert a raw Design vector chromosome to the tuned binary representation.
+* Use a nested for loop structure to convert a raw Design vector chromosome to the tuned binary representation. [Completed]
 * Note: Fitness function F(X) is in ulExternalProblem.m  and f(Y) is in  llExternalProblem.m Write them out! (their inputs are the tuned binary design vectors)
 * Alpha and Beta can then be created in ulTestProblem.m and llTestProblem.m, respectively.
 * Initialize the max # of modules, etc in externalProblem.m
