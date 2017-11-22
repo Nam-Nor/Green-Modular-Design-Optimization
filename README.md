@@ -1,9 +1,6 @@
 # Green Modular Design Optimization
 
-Algorithm implementation derived from BLEAQ2
-------------------------------------------------------------------------
-BLEAQ2 is the second version of a computationally efficient evolutionary algorithm for non-linear bilevel optimization problems. 
-https://github.com/ankurzing/bleaq2
+
 
 TO-DO LIST
 ------------------------------------------------------------------------
