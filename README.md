@@ -1,88 +1,21 @@
-# BLEAQ2
-Version uploaded on 22nd April 2017
+# Green Modular Design Optimization
 
-Readme file for Bilevel Evolutionary Algorithm based on Quadratic Approximations - Version 2
-
-
-Quick instruction for execution:
+Algorithm implementation derived from BLEAQ2
 ------------------------------------------------------------------------
-Code the upper level optimization task in ulExternalProblem.m
+BLEAQ2 is the second version of a computationally efficient evolutionary algorithm for non-linear bilevel optimization problems. 
+https://github.com/ankurzing/bleaq2
 
-Code the lower level optimization task in llExternalProblem.m
-
-xu and xl are the upper and lower level decision vectors respectively
-
-Provide the problem and algorithm parameters in externalProblem.m
-
-Execute it as: externalProblem()
-
-The code is written for maximization at both levels. Feasibility is given as g(x)<=0 and h(x)=0.
-
-The code also allows handling of multiple objectives at upper level. Check the sample implementation in externalProblemMulti.m
-
-
-BLEAQ2
+TO-DO LIST
 ------------------------------------------------------------------------
-BLEAQ2 is the second version of a computationally efficient evolutionary algorithm for non-linear bilevel optimization problems. More information about the working of the algorithm can be found from the following paper.
+* Populate CCF matrices for vg1-4, vh1-3 and vs1-3 (Other group)
+* Consolidate into vg, vh and vs
+* Weighting values for W and w (should be same as the ones used in paper- discuss with group)
+* Use a nested for loop structure to convert a raw Design vector chromosome to the tuned binary representation.
+* Note: Fitness function F(X) is in ulExternalProblem.m  and f(Y) is in  llExternalProblem.m Write them out! (their inputs are the tuned binary design vectors)
+* Alpha and Beta can then be created in ulTestProblem.m and llTestProblem.m, respectively.
+* Initialize the max # of modules, etc in externalProblem.m
+* Find a way to decompose ULC to LLCs.
 
-Sinha, Ankur, Zhichao Lu, Kalyanmoy Deb, and Pekka Malo, "Bilevel Optimization based on Iterative Approximation of Mappings." arXiv preprint arXiv:1702.03394 (2017).
-
-The current implementation is built on earlier versions and also supports solving bilevel optimization problems with multiple objectives at the upper level. Following papers provide further information about the algorithm.
-
-BLEAQ Papers (First version)
-
-Sinha, Ankur, Pekka Malo, and Kalyanmoy Deb. "Evolutionary algorithm for bilevel optimization using approximations of the lower level optimal solution mapping." European Journal of Operational Research 257.2 (2017): 395-411.
-
-Sinha, Ankur, Pekka Malo, and Kalyanmoy Deb. "Efficient evolutionary algorithm for single-objective bilevel optimization." arXiv preprint arXiv:1303.3901 (2013).
-
-Sinha, Ankur, Pekka Malo, and Kalyanmoy Deb. "An improved bilevel evolutionary algorithm based on Quadratic Approximations." In 2014 IEEE Congress on Evolutionary Computation, 2014.
-
-m-BLEAQ Papers (For multiobjective bilevel problems)
-
-Sinha, Ankur, Pekka Malo, Kalyanmoy Deb, Pekka Korhonen, and Jyrki Wallenius. "Solving bilevel multicriterion optimization problems with lower level decision uncertainty." IEEE Transactions on Evolutionary Computation 20, no. 2 (2016): 199-217.
-
-Sinha, Ankur, Pekka Malo, and Kalyanmoy Deb. "Towards understanding bilevel multi-objective optimization with deterministic lower level decisions." International Conference on Evolutionary Multi-Criterion Optimization. Springer International Publishing, 2015.
-
-
-Files in the package
-------------------------------------------------------------------------
-There are the following Matlab (.m) files in this package:
-
-ulSearch.m: Performs search at the upper level.
-
-llSearch.m: Performs search at the lower level.
-
-quadApprox.m: Supporting file for quadratic creating quadratic approximations.
-
-ulTestProblem.m: Source code for upper level SMD and TP suite.
-
-llTestProblem.m: Source code for lower level SMD and TP suite.
-
-ulExternalProblem.m: Source code for upper level optimization task for a user defined problem.
-
-ulExternalProblem.m: Source code for lower level optimization task for a user defined problem
-
-terminationCheck.m: Source code for the termination criteria used in the algorithm. This can be modified based on the user's requirements.
-
-smd1.m - smd14.m: These files contain the problem and algorithm parameters for SMD-Suite. The implementation for the test problems can be found in the ulTestProblem.m and llTestProblem.m files.
-
-tp1.m - tp10.m: These files contain the problem and algorithm parameters for TP-Suite. The implementation for the test problems can be found in the ulTestProblem.m and llTestProblem.m files.
-
-externalProblem.m: It contains the problem and algorithm parameters for a user defined problem.
-
-msmd1: This file contains the problem and algorithm parameters for a sample multiobjective bilevel optimization problem. The implementation for the test problem can be found in the ulTestProblem.m and llTestProblem.m files.
-
-Following are other supporting files
-------------------------------------------------------------------------
-calculateCrowdingDistance.m
-
-nonDominatedSorting.m
-
-getMappings.m
-
-getLowerLevelVariableFromMapping.m
-
-getOptimalSolutionSMD.m
 
 
 Executing a user-defined problem
@@ -139,29 +72,42 @@ ulFunctionEvaluations: Upper level function evaluations required during the exec
 llFunctionEvaluations: Lower level function evaluations required during the exection.
 
 
-Executing the SMD or TP suite
+Files in the package
 ------------------------------------------------------------------------
-To execute one of the SMD test problems (say SMD1), the following command needs to be called:
+There are the following Matlab (.m) files in this package:
 
-smd1()
+ulSearch.m: Performs search at the upper level.
 
-This executes the SMD1 test problem with problem and algorithm parameters coded in smd1.m. It executes a 5 variable SMD1 problem with 2 upper level variables and 3 lower level variables. The results are printed on the screen as well as stored in 'smd1.mat'
+llSearch.m: Performs search at the lower level.
 
-To execute one of the problems in TP-Suite (say SMD1), the following command needs to be called:
+quadApprox.m: Supporting file for quadratic creating quadratic approximations.
 
-tp1()
+ulTestProblem.m: Source code for upper level SMD and TP suite.
 
-This executes tp1 with problem and algorithm parameters coded in tp1.m. The results are printed on the screen as well as stored in 'tp1.mat'
+llTestProblem.m: Source code for lower level SMD and TP suite.
 
+ulExternalProblem.m: Source code for upper level optimization task for a user defined problem.
 
-Contact
+ulExternalProblem.m: Source code for lower level optimization task for a user defined problem
+
+terminationCheck.m: Source code for the termination criteria used in the algorithm. This can be modified based on the user's requirements.
+
+smd1.m - smd14.m: These files contain the problem and algorithm parameters for SMD-Suite. The implementation for the test problems can be found in the ulTestProblem.m and llTestProblem.m files.
+
+tp1.m - tp10.m: These files contain the problem and algorithm parameters for TP-Suite. The implementation for the test problems can be found in the ulTestProblem.m and llTestProblem.m files.
+
+externalProblem.m: It contains the problem and algorithm parameters for a user defined problem.
+
+msmd1: This file contains the problem and algorithm parameters for a sample multiobjective bilevel optimization problem. The implementation for the test problem can be found in the ulTestProblem.m and llTestProblem.m files.
+
+Following are other supporting files
 ------------------------------------------------------------------------
-In case you have any questions, comments, suggestions, or you want to report any bugs, you can send an email to Ankur Sinha (asinha@iima.ac.in)
+calculateCrowdingDistance.m
 
-Ankur Sinha, PhD
+nonDominatedSorting.m
 
-Indian Institute of Management
+getMappings.m
 
-Ahmedabad, India
+getLowerLevelVariableFromMapping.m
 
-asinha@iima.ac.in
+getOptimalSolutionSMD.m
