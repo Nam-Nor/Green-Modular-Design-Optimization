@@ -41,13 +41,15 @@ function [newChromeVec,m] = chromoSort(ChromeVec)
     
     deleteMask=~any(newChromeVec,2); % CREATION OF LOGICAL MASK IDENTIFING
                                      % ROWS CONTAINING ALL FALSE INDICES
-    deleteMask(deleteMask)=[];
-    [m,~]=size(deleteMask);          % IDENTIFING THE NUMBER OF FILLED/
+   
+                                     
+    newChromeVec(deleteMask,:)=[];
+                                     % IDENTIFING THE NUMBER OF FILLED/
                                      % NONEMPTY ROWS OF THE BOOLEAN ARRAY
                                      % TO BE USED FOR LATER BILEVEL
                                      % CALCULATION OUTSIDE THE FUNCTION AS
                                      % THE OUTPUT VARIABLE m
-    
+    [m,~]=size(newChromeVec);
                                      
     newChromeVec=double(newChromeVec); % CONVERTING OUTPUT TO DOUBLE FOR 
                                        % LATER CALCULATION 
