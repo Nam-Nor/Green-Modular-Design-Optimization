@@ -8,13 +8,13 @@ function [newChromeVec,m] = chromoSort(ChromeVec)
 %                     NUMBER OF MODULES TO BE GROUPED. THE INDEX OF THE
 %                     GENE POSITION INDICATES THE NUMBER OF COMPONENTS IN
 %                     THE MODULE
-% OUTPUT: [MxN BOOLEAN] REFORMATTED LOGICAL ARRAY BRAKING THE NUMBER OF 
+% OUTPUT: [MxN DOUBLE]  REFORMATTED LOGICAL ARRAY BRAKING THE NUMBER OF 
 %                       MODULES TO BE GROUPED INTO DIFFERENT ROWS. THE TRUE
 %                       INDICES MARK THE POSITIONS WHERE THE MODULE NUMBERS
 %                       ARE PRESENT - IE THE NUMBER OF COMPONENTS IN THE
 %                       MODULES 
-%         [1x1 DOUBLE] THE MAXIMUM NUMBER OF MODULES THAT ARE GROUPED IN
-%                      THE INPUT CHROMOSOME VECTOR
+%         [1x1 DOUBLE]  THE MAXIMUM NUMBER OF MODULES THAT ARE GROUPED IN
+%                       THE INPUT CHROMOSOME VECTOR
 %
 % ENGINEERS: JAMES S COLLINS
 %            BEN DUSSALT
@@ -30,19 +30,26 @@ function [newChromeVec,m] = chromoSort(ChromeVec)
     
     % IDENTIFING MAXIMUM MODULE NUMBER IN CHROMOSOME AND DECLARING THE
     % OUTPUT LOGICAL ARRAY
-    m=max(ChromeVec);
-    newChromeVec=false(m,L);
+    n=max(ChromeVec);
+    newChromeVec=false(n,L);
     
     % FOR LOOP TO SEPAREATE GENES INTO INDIVIDUAL ROWS MARKING DIFFERENT
     % COLUMNS
-    for i=1:m
+    for i=1:n
         newChromeVec(i,:)=ChromeVec==i; % GENERATING LOGICAL MASK ROWS
     end
     
     deleteMask=~any(newChromeVec,2); % CREATION OF LOGICAL MASK IDENTIFING
                                      % ROWS CONTAINING ALL FALSE INDICES
-
-    newChromeVec(deleteMask,:)=[]; % DELETE ALL FALSE ROWS TO DECREASE 
-                                   % ARRAY SIZE FOR LATER COMPUTATIONS
+    deleteMask(deleteMask)=[];
+    [m,~]=size(deleteMask);          % IDENTIFING THE NUMBER OF FILLED/
+                                     % NONEMPTY ROWS OF THE BOOLEAN ARRAY
+                                     % TO BE USED FOR LATER BILEVEL
+                                     % CALCULATION OUTSIDE THE FUNCTION AS
+                                     % THE OUTPUT VARIABLE m
+    
+                                     
+    newChromeVec=double(newChromeVec); % CONVERTING OUTPUT TO DOUBLE FOR 
+                                       % LATER CALCULATION 
 
 end
