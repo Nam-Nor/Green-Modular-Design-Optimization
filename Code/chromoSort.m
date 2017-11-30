@@ -1,7 +1,12 @@
 function [newChromeVec,m] = chromoSort(ChromeVec) 
-% CHROMOSOME OUTPUT FORMATTER FOR OUTPUT OF GENETIC ALGORITHM 
+% CHROMOSOME OUTPUT FORMATTER FOR OUTPUT OF GENETIC ALGORITHM TO BE 
+% PROCESSED BY THE FITNESS FUNCTION F(X). 
 % THE FUNCTION IS USED IN THE FALL 2017 ME 6101 FINAL GROUP PROJECT ON
 % GREEN MODULAR DESIGN OPTIMIZATION
+%
+% NOTE: TO OBTAIN THE FORMATTED CHROMOSOME USED IN F(X), USE chromoSort.m
+%       INSTEAD!
+%
 %
 % INPUT: [1XN DOUBLE] CHROMOSOME OUTPUT FROM GA 
 %                     EACH INDICE IN THE VECTOR IS A GENE INDICATING THE
@@ -41,13 +46,15 @@ function [newChromeVec,m] = chromoSort(ChromeVec)
     
     deleteMask=~any(newChromeVec,2); % CREATION OF LOGICAL MASK IDENTIFING
                                      % ROWS CONTAINING ALL FALSE INDICES
-    deleteMask(deleteMask)=[];
-    [m,~]=size(deleteMask);          % IDENTIFING THE NUMBER OF FILLED/
+   
+                                     
+    newChromeVec(deleteMask,:)=[];
+                                     % IDENTIFING THE NUMBER OF FILLED/
                                      % NONEMPTY ROWS OF THE BOOLEAN ARRAY
                                      % TO BE USED FOR LATER BILEVEL
                                      % CALCULATION OUTSIDE THE FUNCTION AS
                                      % THE OUTPUT VARIABLE m
-    
+    [m,~]=size(newChromeVec);
                                      
     newChromeVec=double(newChromeVec); % CONVERTING OUTPUT TO DOUBLE FOR 
                                        % LATER CALCULATION 
