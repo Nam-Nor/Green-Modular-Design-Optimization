@@ -25,7 +25,7 @@ function FY = fitnessFunctionff(vg,m,ChromeArr)
  
  %FINDING DENOMINATOR TERM
  for i = 1:1:m
-     [mk, ~] = chromoSort(ChromeArr(k,:));
+     [mk, ~] = chromoSort(ChromeArr(i,:));
      den = den + mk;
  end
  
@@ -48,7 +48,7 @@ denom=0;
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k = 1:1:m
-        [mk, chromArray] = chromoSort(ChromeArr(k,:));
+        [mk, chromArray] = chromoSortMultiDim(ChromeArr);
         for j=1:1:mk
             % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
                 for i=1:1:n 
@@ -56,8 +56,8 @@ denom=0;
                         % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
                         % INCLUDED IN THE DOUBLE SUMMATION
                         v1=vg(i,l);
-                        y1=chromArray(j,i);
-                        y2=chromArray(j,l);
+                        y1=chromArray(k,j,i);
+                        y2=chromArray(k,j,l);
                         numo=numo+(y1*y2*v1);
                     end
                 end
@@ -65,7 +65,7 @@ denom=0;
                 % THIS BLOCK DEFINES THE SQUARED 
                 % SUMMATION TERM IN THE DENOMINATOR 
                 for l=1:1:n
-                    denom=denom+chromArray(j,l);
+                    denom=denom+chromArray(k,j,l);
                 end
                 denom=(denom)^2;
                 % EXTERNAL SUMMATION 
@@ -91,7 +91,7 @@ denom=0;
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k = 1:1:m
-        [mk, chromArray] = chromoSort(ChromeArr(k,:));
+        [mk, chromArray] = chromoSortMultiDim(ChromeArr);
         for j=1:1:mk
             % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
                 for i=1:1:n 
@@ -99,8 +99,8 @@ denom=0;
                         % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
                         % INCLUDED IN THE DOUBLE SUMMATION
                         v1=vg(i,l);
-                        y1=chromArray(j,i);
-                        y2=abs(1-chromArray(j,l));
+                        y1=chromArray(k,j,i);
+                        y2=abs(1-chromArray(k,j,l));
                         numo=numo+(y1*y2*v1);
                     end
                 end
@@ -108,7 +108,7 @@ denom=0;
                 % THIS BLOCK DEFINES THE SQUARED 
                 % SUMMATION TERM IN THE DENOMINATOR 
                 for l=1:1:n
-                    denom=denom+chromArray(j,l);
+                    denom=denom+chromArray(kj,l);
                 end
                 denom=(n-denom)^2;
                 % EXTERNAL SUMMATION 
