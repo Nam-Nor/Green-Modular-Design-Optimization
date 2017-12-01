@@ -49,9 +49,6 @@ denom=0;
 [binChromArray,mk] = chromoSortMultiDim(crossOverChromosome);
 % ISOLATE THE LARGEST ELEMENT VALUE AS m
 m = max(max(crossOverChromosome));
-% THROW AN ERROR IF THE COMPONENT NUMBER (CHROMOSOME LENGTH) DOESN'T MATCH
-assert(checkn==n,'SOMETHING IS WRONG WITH THE CHROMOSOME LENGTH');
-
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k = 1:1:m
