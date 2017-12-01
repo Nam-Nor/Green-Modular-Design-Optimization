@@ -1,4 +1,4 @@
-function multiDimArray = chromoSortMultiDim(chromeArray)
+function [multiDimArray,mk] = chromoSortMultiDim(chromeArray)
 % CHROMOSOME OUTPUT FORMATTER FOR OUTPUT OF GENETIC ALGORITHM TO BE 
 % PROCESSED BY THE FITNESS FUNCTION f(X). 
 % THE FUNCTION IS USED IN THE FALL 2017 ME 6101 FINAL GROUP PROJECT ON
@@ -18,6 +18,11 @@ function multiDimArray = chromoSortMultiDim(chromeArray)
 %                           THE TRUE/ONE INDICES MARK THE POSITIONS WHERE 
 %                           THE MODULES ARE PRESENT - IE THE NUMBER OF 
 %                           COMPONENTS IN THE MODULE
+%         [1x1 DOUBLE]      VALUE OF THE TOTAL NUMBER OF DIFFERENT 
+%                           ELEMENTS CONTAINED IN THE DIFFERENT 
+%                           CHROMOSOMES. THIS CORRESPONDS TO THE NUMBER OF
+%                           LOWER LEVEL CHROMOSOMES THAT HAVE BEEN
+%                           DECOMPOSED
 %         
 % ENGINEERS: JAMES S COLLINS
 %            BEN DUSSALT
@@ -26,7 +31,7 @@ function multiDimArray = chromoSortMultiDim(chromeArray)
 %
 % PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT
 % DATE: NOVEMBER 2017
-% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ALT, GA
+% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % INDEX THE NUMBER OF ROWS AND COLUMNS OF THE INPUT CHROMOSOME ARRAY
@@ -34,15 +39,17 @@ function multiDimArray = chromoSortMultiDim(chromeArray)
 [R,n]=size(chromeArray); 
 % INITIALIZE THE OUTPUT AS A R3 ARRAY
 multiDimArray=zeros(1,1,n);
-
+mk=0;
 % LOOP THROUGH THE ROWS OF THE INPUT ARRAY
 for i=1:1:R
     % CALL FORMATTING FUNCTION FOR EACH 1xN CHROMOSOME VECTOR
     % THE OUTPUT IS A MxN ARRAY
-    [~,binArr,m,~]=chromoSort(chromeArray(i,:));    
+    [~,binArr,mki,~]=chromoSort(chromeArray(i,:));    
     % INSERT THE R2 ARRAY INTO A THIRD DIM LAYER OF THE R3 ARRAY. EACH OF
     % THESE THIRD DIM SLICES CORRESPONDS TO A ROW IN THE FUNCTION'S INPUT
     % CHROMOSOME ARRAY
-    multiDimArray(i,1:m,:)=binArr;  
+    multiDimArray(i,1:mki,:)=binArr; 
+    mk=mk+mki;
 end
+    
 end
