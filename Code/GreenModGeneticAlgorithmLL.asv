@@ -1,7 +1,15 @@
-function [newGen] = GreenModGeneticAlgorithm(prevGen,prevGenScores)
+function [newGen] = GreenModGeneticAlgorithmLL(prevGen)
 % GENETIC ALGORITHM TO PROCESS A GIVEN SET OF CHROMOSOMES DEFINING A
 % POPULATION AND USE FITNESS SCORES TO PRODUCE A NEW GENERATION WITH
 % CROSSOVER AND MUTATION ALTERATIONS.
+%
+%   NOTE: THIS IS USED IN THE LOWER LEVEL OPTIMIZATION!!!
+%         USE GreenModGeneticAlgorithmUL.m FOR THE UPPER LEVEL CHROMOSOME
+%         OPTIMIZATION
+%         THE ONLY DIFFERENCE BETWEEN THIS SCRIPT AND 
+%         GreenModGeneticAlgorithmUL.m IS THAT IT DOES NOT TAKE INTO
+%         ACCOUNT FITNESS SCORES FOR THE CROSSOVER. CROSSOVER SELECTION IS
+%         THEREFORE DONE RANDOMLY
 %
 %   INPUTS:
 %       [PxN DOUBLE] ARRAY OF DESIGN VECTORS DEFINING A POPULATION FOR A
@@ -24,10 +32,12 @@ function [newGen] = GreenModGeneticAlgorithm(prevGen,prevGenScores)
 % LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% SCALE THE FITNESS FUNCTION SCORES 
-expectation = GreenModFitScalingRank(prevGenScores);
-% DERIVE THE CORRESPONDING INDEX VECTOR FOR CROSSOVER 
-mateIndex = GreenModSelection(expectation);
+% IDENTIFY THE NUMBER OF INDIVIDUALS IN THE POPULATION
+nParents = size(prevGen,1);
+% RANDOMLY DETERMINE THE SELECTION INDEX
+mateIndex = randi(nParents,[
+mateIndex = rand(1,nParents);
+mateIndex = ceil(mateIndex * length(expectation));
 % CALL THE CROSSOVER FUNCTION TO MATE DIFFERENT INDIVIDUALS IN ROWS OF THE
 % POPULATION ARRAY
 newGen = GreenModCrossoverScattered(prevGen,mateIndex);
