@@ -14,9 +14,9 @@
 clear all
 clc
 
-vh=0; %dummy
-vg=0; % dummy
-vs=0; %dummy
+load Vg.mat;
+load Vh.mat;
+load Vs.mat;
 
 Fstar=0.29;
 fstar=0.17;
@@ -31,34 +31,38 @@ m=round(sqrt(components)); %inital max number of modules
 % Store the alpha, beta (>=0) and the corresponding chromosome
 A=cell(population,5); 
 
-ULmembers=randi(m,[population components]);
-LLmembers=zeros(population, components);
+ULmembers = randi(m,[population components]);
+LLmembers = zeros(population, components);
+ULscores = randi(10,[population 1]);
 
 for i=1:ULiterations
-    %%%%%perform CGA on ULmembers here%%%%%
-    
+    % Perform CGA on ULmembers
+    ULmembers=GreenModGeneticAlgorithm(ULmembers,ULscores);
     % now we have a new population of ULCs
     for j=1:population
-        [~,binX,mk,m] = chromoSort(ULmembers(j,:)); %decompose each ULC
-        F=fitnessFunctionF(vh,vs,m,binX);
+        [X,binX,mk,m] = chromoSort(ULmembers(j,:)); %decompose each ULC
+        F=fitnessFunctionF(Vh,Vs,m,ULmembers(j,:));
+        ULscores(j,1)=F;
         alpha=(F-Fstar)/(1-Fstar);
         %%%%Evaluate Alpha(X)%%%
         if alpha<0
             break
         else
             binY=binX;
-            f=fitnessFunctionff(vg,binY);
+            Y=X;
+            f=fitnessFunctionff(Vg,Y);
             beta=(f-fstar)/(1-fstar);
             %%%%Evaluate Beta(Y)%%%
             if beta>=0
                 A(j,:)={[alpha],[beta],[F],[f],ULmembers(j,:)};
             else
-                LLmembers(1:population,:)=Y; %%Initalize all to Y
+                LLscores(1:size(Y,1),1)=f;
                 for k=1:LLiterations
-                    %%%%%perform CGA on LLmembers here%%%%%
-                    % now we have a new population of LLCs
-                    for l=1:population
-                        [Y,m] = chromoSort(LLmembers(l,:));
+                    %%%%%perform CGA on Y%%%%%
+                    Y=GreenModGeneticAlgorithm(Y,prevGenScores)
+                    for l=1:size(Y,1)
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        [multiY,mk] = chromoSortMultiDim(Y(l));
                         %%%%evaluate beta(Y) %%%%
                         beta=2; %%dummy
                         if beta<0
