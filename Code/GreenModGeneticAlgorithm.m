@@ -1,4 +1,4 @@
-function [newGen] = GreenModGeneticAlgorithm(prevGen,firstGenScores)
+function [newGen] = GreenModGeneticAlgorithm(prevGen,prevGenScores)
 % GENETIC ALGORITHM TO PROCESS A GIVEN SET OF CHROMOSOMES DEFINING A
 % POPULATION AND USE FITNESS SCORES TO PRODUCE A NEW GENERATION WITH
 % CROSSOVER AND MUTATION ALTERATIONS.
@@ -25,7 +25,7 @@ function [newGen] = GreenModGeneticAlgorithm(prevGen,firstGenScores)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % SCALE THE FITNESS FUNCTION SCORES 
-expectation = GreenModFitScalingRank(firstGenScores);
+expectation = GreenModFitScalingRank(prevGenScores);
 % DERIVE THE CORRESPONDING INDEX VECTOR FOR CROSSOVER 
 mateIndex = GreenModSelection(expectation);
 % CALL THE CROSSOVER FUNCTION TO MATE DIFFERENT INDIVIDUALS IN ROWS OF THE
