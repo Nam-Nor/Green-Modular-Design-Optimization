@@ -1,12 +1,12 @@
-function FY = fitnessFunctionff(vg,m,crossOverChromosome)
+function FY = fitnessFunctionff(vg,crossOverChromosome)
 % THIS FUNCTION CALCULATES THE FITNESS FUNCTION f(Y) DESIGN
 % MEASURE. THIS FUNCTION SHOULD BE USED THROUGH THE BILEVEL OPTIMIZATION 
 % ALONG WITH THE FIRST FITNESS FUNCTION F(X)
 % FOR THE FORMULA, SEE EQUATION 9
 %
 % INPUT:  [NxN DOUBLE]  CCF ARRAY DEFINED AS v^g IN THE EQUATION
-%         [1x1 DOUBLE]  NUMBER OF MODULES (OUTPUT FROM CHROMOSORT FUNCTION)
 %         [MxN DOUBLE]  ARRAY OF LLCS FOR EACH ULC MODULE
+%
 % OUTPUT: [1x1 DOUBLE]  FITNESS f(Y) DESIGN MEASURE
 %
 % ENGINEERS: JAMES S COLLINS
@@ -16,10 +16,10 @@ function FY = fitnessFunctionff(vg,m,crossOverChromosome)
 %
 % PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT
 % DATE: NOVEMBER 2017
-% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ALT, GA
+% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- [FNT1,mk] = ffNumerator1(vg,m,crossOverChromosome);
+ [FNT1,mk] = ffNumerator1(vg,crossOverChromosome);
  [FNT2,~] = ffNumerator2(vg,m,crossOverChromosome);
  
  denom = 0;
@@ -31,7 +31,7 @@ function FY = fitnessFunctionff(vg,m,crossOverChromosome)
 
 end
 
-function [ffNumeratorTerm1,mk] = ffNumerator1(vg,m,crossOverChromosome)
+function [ffNumeratorTerm1,mk] = ffNumerator1(vg,crossOverChromosome)
 % THIS FUNCTION CALCULATES THE FIRST NUMERATOR TERM OF THE f(Y) DESIGN
 % MEASURE. THIS FUNCTION ALONG WITH ffNumerator2 SHOULD BE USED THROUGH THE
 % BILEVEL OPTIMIZATION 
@@ -39,12 +39,20 @@ function [ffNumeratorTerm1,mk] = ffNumerator1(vg,m,crossOverChromosome)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n=37; % SETTING THE COMPONENT NUMBER
-ffNumeratorTerm1=0; % DECLARING ITERATION VARIBLES
+% SETTING THE COMPONENT NUMBER
+n=37; 
+% DECLARING ITERATION VARIABLES
+ffNumeratorTerm1=0; 
 numo=0;
-denom=0;    
+denom=0;
+% SORT THE INPUT INTO A R3 BINARY ARRAY
+[binChromArray,mk] = chromoSortMultiDim(crossOverChromosome);
+% ISOLATE THE LARGEST ELEMENT VALUE AS m
+m = max(max(crossOverChromosome));
+% THROW AN ERROR IF THE COMPONENT NUMBER (CHROMOSOME LENGTH) DOESN'T MATCH
+assert(checkn==n,'SOMETHING IS WRONG WITH THE CHROMOSOME LENGTH');
 
- [mk, R3chromArray] = chromoSortMultiDim(crossOverChromosome);
+
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k = 1:1:m
         for j=1:1:mk
@@ -54,8 +62,8 @@ denom=0;
                         % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
                         % INCLUDED IN THE DOUBLE SUMMATION
                         v1=vg(i,l);
-                        y1=R3chromArray(k,j,i);
-                        y2=R3chromArray(k,j,l);
+                        y1=binChromArray(k,j,i);
+                        y2=binChromArray(k,j,l);
                         numo=numo+(y1*y2*v1);
                     end
                 end
@@ -63,7 +71,7 @@ denom=0;
                 % THIS BLOCK DEFINES THE SQUARED 
                 % SUMMATION TERM IN THE DENOMINATOR 
                 for l=1:1:n
-                    denom=denom+R3chromArray(k,j,l);
+                    denom=denom+binChromArray(k,j,l);
                 end
                 denom=(denom)^2;
                 % EXTERNAL SUMMATION 
@@ -74,7 +82,7 @@ denom=0;
     end
 end
 
-function [ffNumeratorTerm2,mk] = ffNumerator2(vg,m,chromosome)
+function [ffNumeratorTerm2,mk] = ffNumerator2(vg,crossOverChromosome)
 % THIS FUNCTION CALCULATES THE FIRST NUMERATOR TERM OF THE f(Y) DESIGN
 % MEASURE. THIS FUNCTION ALONG WITH ffNumerator2 SHOULD BE USED THROUGH THE
 % BILEVEL OPTIMIZATION 
@@ -82,15 +90,25 @@ function [ffNumeratorTerm2,mk] = ffNumerator2(vg,m,chromosome)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n=37; % SETTING THE COMPONENT NUMBER
-ffNumeratorTerm2=0; % DECLARING ITERATION VARIBLES
+
+
+% SETTING THE COMPONENT NUMBER
+n=37; 
+% DECLARING ITERATION VARIBLES
+ffNumeratorTerm2=0; 
 numo=0;
 denom=0;  
-[chromArray,m,mk] = chromoSort(chromosome);
+
+% SORT THE INPUT INTO A R3 BINARY ARRAY
+[binChromArray,mk] = chromoSortMultiDim(crossOverChromosome);
+% ISOLATE THE LARGEST ELEMENT VALUE AS m
+m = max(max(crossOverChromosome));
+% THROW AN ERROR IF THE COMPONENT NUMBER (CHROMOSOME LENGTH) DOESN'T MATCH
+assert(checkn==n,'SOMETHING IS WRONG WITH THE CHROMOSOME LENGTH');
+
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k = 1:1:m
-      
         for j=1:1:mk
             % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
                 for i=1:1:n 
@@ -98,16 +116,15 @@ denom=0;
                         % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
                         % INCLUDED IN THE DOUBLE SUMMATION
                         v1=vg(i,l);
-                        y1=chromArray(k,j,i);
-                        y2=abs(1-chromArray(k,j,l));
+                        y1=binChromArray(k,j,i);
+                        y2=abs(1-binChromArray(k,j,l));
                         numo=numo+(y1*y2*v1);
                     end
                 end
-
                 % THIS BLOCK DEFINES THE SQUARED 
                 % SUMMATION TERM IN THE DENOMINATOR 
                 for l=1:1:n
-                    denom=denom+chromArray(kj,l);
+                    denom=denom+binChromArray(kj,l);
                 end
                 denom=(n-denom)^2;
                 % EXTERNAL SUMMATION 
