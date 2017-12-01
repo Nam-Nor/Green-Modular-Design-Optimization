@@ -1,4 +1,4 @@
-function FY = fitnessFunctionff(vg,crossOverChromosome)
+function fY = fitnessFunctionff(vg,crossOverChromosome)
 % THIS FUNCTION CALCULATES THE FITNESS FUNCTION f(Y) DESIGN
 % MEASURE. THIS FUNCTION SHOULD BE USED THROUGH THE BILEVEL OPTIMIZATION 
 % ALONG WITH THE FIRST FITNESS FUNCTION F(X)
@@ -27,7 +27,7 @@ function FY = fitnessFunctionff(vg,crossOverChromosome)
    denom = denom + mk;
  end
  
- FY=(FNT1-FNT2)/denom;
+ fY=(FNT1-FNT2)/denom;
 
 end
 
