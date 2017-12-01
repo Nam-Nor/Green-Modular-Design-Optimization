@@ -1,4 +1,4 @@
-function children  = GreenModCrossoverScattered(parents,selectionIndex)
+function children  = GreenModCrossoverScattered(parents,mateIndex)
 %   EXECUTES A POSITION INDEPENDENT CROSSOVER OF CHROMOSOME ELEMENTS 
 %   M ROWS OF DESIGN CHROMOSOMES ARE MATCHED FOR CROSSOVER BY A SELECTION
 %   INDEX FROM THE GreenModSelection.m FUNCTION
@@ -8,7 +8,7 @@ function children  = GreenModCrossoverScattered(parents,selectionIndex)
 %   INPUTS:
 %       parents : ARRAY CONSISTING OF M DESIGN CHROMOSOME VECTORS FOR N
 %                 DESIGN COMPONENTS
-%       selectionIndex : VECTOR IDENTIFYING THE ROWS IN THE PARENT ARRAY 
+%       mateIndex :      VECTOR IDENTIFYING THE ROWS IN THE PARENT ARRAY 
 %                        TO BE BRED WITH THE MATCHING ROW IN THE ARRAY 
 %                        WHERE THE VECTOR'S ELEMENT IS POSITIONED. 
 %                        IE. A FIRST ELEMENT IN selectionIndex of 3 MEANS
@@ -22,7 +22,7 @@ function children  = GreenModCrossoverScattered(parents,selectionIndex)
 %   ENGINEERS: JAMES COLLINS & NAMKHA NORSANG
 %   PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT
 %   DATE: NOVEMBER 2017
-%   LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ALT, GA
+%   LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA
 %
 %   NOTE: THIS FUNCTION IS BASED ON MATLAB'S crossoverScattered.m FUNCTION
 %   Copyright 2003-2015 The MathWorks, Inc.
@@ -35,7 +35,7 @@ assert(mod(nchildren,2)==0,'AN EVEN NUMBER OF PARENTS MUST BE SELECTED');
 % INITALIZE CHILDREN OUTPUT ARRAY
 children = zeros(nchildren,GenomeLength);
 % INITALIZED NEW ARRAY TO MATCH TO PARENT ARRAY FOR MATING 
-mateArray = parents(selectionIndex,:);
+mateArray = parents(mateIndex,:);
 % INITIALIZE INDEX
 index = 1;
 for i=1:nchildren/2
