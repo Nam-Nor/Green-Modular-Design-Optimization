@@ -1,4 +1,4 @@
-function [chromosomeVec,binChromosomeVec,m,mk] = chromoSort(chromosome) 
+function [chromosomeArr,binChromosomeArr,mk,m] = chromoSort(chromosome) 
 % CHROMOSOME OUTPUT FORMATTER FOR OUTPUT OF GENETIC ALGORITHM TO BE 
 % PROCESSED BY THE FITNESS FUNCTION F(X). 
 % THE FUNCTION IS USED IN THE FALL 2017 ME 6101 FINAL GROUP PROJECT ON
@@ -13,15 +13,19 @@ function [chromosomeVec,binChromosomeVec,m,mk] = chromoSort(chromosome)
 %                     NUMBER OF MODULES TO BE GROUPED. THE INDEX OF THE
 %                     GENE POSITION INDICATES THE NUMBER OF COMPONENTS IN
 %                     THE MODULE
-% OUTPUT: [MxN DOUBLE]  REFORMATTED LOGICAL ARRAY BRAKING THE NUMBER OF 
-%                       MODULES TO BE GROUPED INTO DIFFERENT ROWS. THE TRUE
-%                       INDICES MARK THE POSITIONS WHERE THE MODULE NUMBERS
-%                       ARE PRESENT - IE THE NUMBER OF COMPONENTS IN THE
-%                       MODULES 
-%         [1x1 DOUBLE]  THE MAXIMUM NUMBER OF MODULES THAT ARE GROUPED IN
-%                       THE INPUT CHROMOSOME VECTOR
-%         [1x1 DOUBLE]  THE UNIQUE NUMBER OF MODULES CONSIDERED
 %
+% OUTPUT: [MxN DOUBLE]  REFORMATTED ARRAY BREAKING THE NUMBER OF 
+%                       MODULES TO BE GROUPED INTO DIFFERENT ROWS. 
+%                       THE INDICES MARK THE POSITIONS WHERE THE MODULE 
+%                       NUMBERS ARE PRESENT - IE THE NUMBER OF COMPONENTS 
+%                       IN THE MODULES 
+%         [MxN DOUBLE]  REFORMATTED ARRAY SIMILAR TO chromosomeArr BUT 
+%                       CONSISTING OF BINARY ELEMENTS
+%         [1x1 DOUBLE]  THE MAXIMUM NUMBER OF DIFFERENT ELEMENTS IN THE 
+%                       INPUT CHROMOSOME VECTOR
+%         [1x1 DOUBLE]  THE MAXIMUM ELEMENT VALUE CONTAINED IN THE 
+%                       INPUT CHROMOSOME VECTOR
+
 % ENGINEERS: JAMES S COLLINS
 %            BEN DUSSALT
 %            NAMKHA NORSANG
@@ -29,7 +33,7 @@ function [chromosomeVec,binChromosomeVec,m,mk] = chromoSort(chromosome)
 %
 % PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT
 % DATE: NOVEMBER 2017
-% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ALT, GA
+% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     L=length(chromosome); % GET THE LENGTH OF THE CHROMOSOME INPUT IE THE 
                          % TOTAL NUMBER OF COMPONENTS
@@ -37,32 +41,32 @@ function [chromosomeVec,binChromosomeVec,m,mk] = chromoSort(chromosome)
     % IDENTIFING MAXIMUM MODULE NUMBER IN CHROMOSOME AND DECLARING THE
     % OUTPUT LOGICAL ARRAY
     n=max(chromosome);
-    binChromosomeVec=false(n,L);
-    chromosomeVec=zeros(n,L);
+    binChromosomeArr=false(n,L);
+    chromosomeArr=zeros(n,L);
     % FOR LOOP TO SEPAREATE GENES INTO INDIVIDUAL ROWS MARKING DIFFERENT
     % COLUMNS
     for i=1:n
         % GENERATING LOGICAL MASK ROWS
-        binChromosomeVec(i,:)=chromosome==i; 
+        binChromosomeArr(i,:)=chromosome==i; 
         % PORTION TO ASSIGN THE DOUBLE ARRAY THE SEPARATE VALUES
         rw=zeros(1,L);
-        rw(binChromosomeVec(i,:))=i;
-        chromosomeVec(i,:)=rw;
+        rw(binChromosomeArr(i,:))=i;
+        chromosomeArr(i,:)=rw;
     end
     % CREATION OF LOGICAL MASK IDENTIFING
     % ROWS CONTAINING ALL FALSE INDICES
-    deleteMask=~any(binChromosomeVec,2); 
+    deleteMask=~any(binChromosomeArr,2); 
    
     % USE THE LOGICAL MASK TO IDENTIFY AND ISOLATE ALL THE ROWS CONTAINING
     % TRUE ELEMENTS IN THE COLUMNS OR DOUBLES ~= 0
-    binChromosomeVec(deleteMask,:)=[];
-    chromosomeVec(deleteMask,:)=[];
+    binChromosomeArr(deleteMask,:)=[];
+    chromosomeArr(deleteMask,:)=[];
     % DETERMINE THE PARAMENTER m USED IN LATER CALCULATIONS AS THE NUMBER
     % OF FILLED ROWS IN THE CHROMOSOME ARRAY
-    [m,~]=size(binChromosomeVec);
+    [mk,~]=size(binChromosomeArr);
     % CONVERT THE LOGICAL TO TYPE DOUBLE FOR FITNESS FUNCTION CALCULATION                               
-    binChromosomeVec=double(binChromosomeVec); 
+    binChromosomeArr=double(binChromosomeArr); 
     % DETERMINE THE PARAMETER mk FOR LATER CALCULATIONS. mk IS THE MAXIMUM
     % ELEMENT VALUE IN THE INPUT CHROMOSOME
-    mk=max(chromosome);
+    m=max(chromosome);
 end
