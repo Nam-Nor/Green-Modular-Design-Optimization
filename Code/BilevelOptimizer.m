@@ -43,7 +43,7 @@ for i=1:ULiterations
     % now we have a new population of ULCs
     for j=1:population
         [X,binX,mk,m] = chromoSort(ULmembers(j,:)); %decompose each ULC
-        F=fitnessFunctionF(Vh,Vs,m,ULmembers(j,:));
+        F=fitnessFunctionF(vh,vs,ULmembers(j,:));
         ULscores(j,1)=F;
         alpha=(F-Fstar)/(1-Fstar);
         %%%%Evaluate Alpha(X)%%%
@@ -52,7 +52,7 @@ for i=1:ULiterations
         else
             binY=binX;
             Y=X;
-            f=fitnessFunctionff(Vg,Y);
+            f=fitnessFunctionff(vg,Y);
             beta=(f-fstar)/(1-fstar);
             %%%%Evaluate Beta(Y)%%%
             if beta>=0
