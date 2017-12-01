@@ -37,7 +37,9 @@ ULscores = randi(10,[population 1]);
 
 for i=1:ULiterations
     % Perform CGA on ULmembers
-    ULmembers=GreenModGeneticAlgorithm(ULmembers,ULscores);
+    % CHANGED!: specified the name for the genetic algorithm performed here
+    % to be Upper Level (UL)
+    ULmembers=GreenModGeneticAlgorithmUL(ULmembers,ULscores);
     % now we have a new population of ULCs
     for j=1:population
         [X,binX,mk,m] = chromoSort(ULmembers(j,:)); %decompose each ULC
@@ -59,7 +61,10 @@ for i=1:ULiterations
                 LLscores(1:size(Y,1),1)=f;
                 for k=1:LLiterations
                     %%%%%perform CGA on Y%%%%%
-                    Y=GreenModGeneticAlgorithm(Y,prevGenScores)
+                    % CHANGED! : new function introduced for lower level
+                    % optimization where the fitness performance is not
+                    % taken into account.
+                    Y=GreenModGeneticAlgorithmLL(Y);
                     for l=1:size(Y,1)
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                         [multiY,mk] = chromoSortMultiDim(Y(l));
