@@ -46,11 +46,11 @@ for i=1:nchildren/2
     % SELECT 1/2 THE GENES FROM EACH PARENT TO SWAP
     for j = 1:GenomeLength
         if(rand > 0.5)
-            children(i-1,j) = r1(j);
-            children(i,j) = r2(j);
+            children(index-1,j) = r1(j);
+            children(index,j) = r2(j);
         else
-            children(i-1,j) = r2(j);
-            children(i,j) = r1(j);
+            children(index-1,j) = r2(j);
+            children(index,j) = r1(j);
         end
     end
     index = index + 1;
