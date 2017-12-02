@@ -45,9 +45,10 @@ n=37;
 FNumeratorTerm1=0; 
 numo=0;
 denom=0;    
-numo2=0;
+
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k=1:1:m
+    
         % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
             for i=1:1:n 
                 for j=1:1:n
@@ -57,11 +58,10 @@ numo2=0;
                     v2=vs(i,j);
                     x1=chromArray(k,i);
                     x2=chromArray(k,j);
-                    numo2=numo2+(x1*x2*v1*v2);
+                    numo=numo+(x1*x2*v1*v2);
                 end
             end
-            numo = numo2;
-            numo2 = 0;
+
             % THIS BLOCK DEFINES THE SQUARED 
             % SUMMATION TERM IN THE DENOMINATOR 
             for l=1:1:n
@@ -85,7 +85,6 @@ function FNumeratorTerm2 = FNumerator2(vh,vs,m,chromArray)
 n=37; % SETTING THE COMPONENT NUMBER
 FNumeratorTerm2=0; % DECLARING ITERATION VARIBLES
 numo=0;
-numo2=0;
 denom=0;    
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
@@ -102,8 +101,7 @@ denom=0;
                     numo=numo+(x1*x2*v1*v2);
                 end
             end
-            numo = numo2;
-            numo2 = 0;
+
             % THIS BLOCK DEFINES THE SQUARED 
             % SUMMATION TERM IN THE DENOMINATOR 
             for l=1:1:n
