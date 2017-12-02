@@ -42,7 +42,7 @@ for i=1:ULiterations
     ULmembers=GreenModGeneticAlgorithmUL(ULmembers,ULscores);
     % now we have a new population of ULCs
     for j=1:population
-        [X,binX,mk,m] = chromoSort(ULmembers(j,:)); %decompose each ULC
+        [X,binX,~,m] = chromoSort(ULmembers(j,:)); %decompose each ULC
         F=fitnessFunctionF(vh,vs,ULmembers(j,:));
         ULscores(j,1)=F;
         alpha=(F-Fstar)/(1-Fstar);
@@ -58,7 +58,7 @@ for i=1:ULiterations
             if beta>=0
                 A(j,:)={[alpha],[beta],[F],[f],ULmembers(j,:)};
             else
-                LLscores(1:size(Y,1),1)=f;
+                LLmembers(1:size(Y,1),1)=f;
                 for k=1:LLiterations
                     %%%%%perform CGA on Y%%%%%
                     % CHANGED! : new function introduced for lower level
@@ -67,19 +67,19 @@ for i=1:ULiterations
                     Y=GreenModGeneticAlgorithmLL(Y);
                     for l=1:size(Y,1)
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                        [multiY,mk] = chromoSortMultiDim(Y(l));
+                        f = fitnessFunctionff(vg,Y(l));
                         %%%%evaluate beta(Y) %%%%
-                        beta=2; %%dummy
+                        beta=(f-fstar)/(1-fstar);
                         if beta<0
                             break
                         else
-                            X=Y;
+                            F=fitnessFunctionF(vh,vs,Y(l));
                             %%%%evaluate alpha(X)%%%%%%
-                            alpha=1; %dummy
+                            alpha=(F-Fstar)/(1-Fstar);
                             if alpha<0
                                 break
                             else
-                                A(j)=X;
+                                A(j,:)={[alpha],[beta],[F],[f],Y(l)};
                             end
                         end
                     end
