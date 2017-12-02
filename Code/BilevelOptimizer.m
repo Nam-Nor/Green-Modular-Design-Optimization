@@ -47,7 +47,7 @@ for i=1:ULiterations
         ULscores(j,1)=F;
         alpha=(F-Fstar)/(1-Fstar);
         %%%%Evaluate Alpha(X)%%%
-        if alpha<0 || ~isnan(alpha)
+        if alpha<0 || isnan(alpha)
             break
         else
             binY=binX;
@@ -55,8 +55,9 @@ for i=1:ULiterations
             f=fitnessFunctionff(vg,Y);
             beta=(f-fstar)/(1-fstar);
             %%%%Evaluate Beta(Y)%%%
-            if beta>=0 || ~isnan(beta)
-                A(j,:)={[alpha],[beta],[F],[f],ULmembers(j,:)};
+            if beta>=0 && ~isnan(beta)
+                [currentAPop,~]=size(A);
+                A(currentAPop+1,:)={[alpha],[beta],[F],[f],ULmembers(j,:)};
             else
                 LLmembers(1:size(Y,1),1)=f;
                 for k=1:LLiterations
@@ -70,13 +71,13 @@ for i=1:ULiterations
                         f = fitnessFunctionff(vg,Y(l,:));
                         %%%%evaluate beta(Y) %%%%
                         beta=(f-fstar)/(1-fstar);
-                        if beta<0 || ~isnan(beta)
+                        if beta<0 || isnan(beta)
                             break
                         else
                             F=fitnessFunctionF(vh,vs,Y(l,:));
                             %%%%evaluate alpha(X)%%%%%%
                             alpha=(F-Fstar)/(1-Fstar);
-                            if alpha<0 || ~isnan(alpha)
+                            if alpha<0 || isnan(alpha)
                                 break
                             else
                                 [currentAPop,~]=size(A);
