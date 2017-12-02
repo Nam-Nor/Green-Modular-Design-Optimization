@@ -29,9 +29,6 @@ function children  = GreenModCrossoverScattered(parents,mateIndex)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DETERMINE SIZE OF CHROMOSOME VECTORS AND NUMBER IN POPULATION
 [nchildren,GenomeLength] = size(parents); 
-% ERROR IF THERE ARE AN ODD NUMBER OF CHILDREN/PARENTS - THE APPLIED
-% ALGORITHM ASSUMES A CONSTANT POPULATION
-assert(mod(nchildren,2)==0,'AN EVEN NUMBER OF PARENTS MUST BE SELECTED');
 % INITALIZE CHILDREN OUTPUT ARRAY
 children = zeros(nchildren,GenomeLength);
 % INITALIZED NEW ARRAY TO MATCH TO PARENT ARRAY FOR MATING 

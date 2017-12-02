@@ -20,7 +20,8 @@ function fY = fitnessFunctionff(vg,crossOverChromosome)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
  [FNT1,mk] = ffNumerator1(vg,crossOverChromosome);
- [FNT2,~] = ffNumerator2(vg,m,crossOverChromosome);
+ [FNT2,~] = ffNumerator2(vg,crossOverChromosome);
+ m = max(max(crossOverChromosome));
  
  denom = 0;
  for i=1:1:m
@@ -48,10 +49,11 @@ denom=0;
 % SORT THE INPUT INTO A R3 BINARY ARRAY
 [binChromArray,mk] = chromoSortMultiDim(crossOverChromosome);
 % ISOLATE THE LARGEST ELEMENT VALUE AS m
-m = max(max(crossOverChromosome));
+[ym,~] = size(crossOverChromosome);
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
-    for k = 1:1:m
+    for k = 1:1:ym
+        [~,~,mk,~] = chromoSort(crossOverChromosome(k,:));
         for j=1:1:mk
             % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
                 for i=1:1:n 
@@ -99,13 +101,10 @@ denom=0;
 % SORT THE INPUT INTO A R3 BINARY ARRAY
 [binChromArray,mk] = chromoSortMultiDim(crossOverChromosome);
 % ISOLATE THE LARGEST ELEMENT VALUE AS m
-m = max(max(crossOverChromosome));
-% THROW AN ERROR IF THE COMPONENT NUMBER (CHROMOSOME LENGTH) DOESN'T MATCH
-assert(checkn==n,'SOMETHING IS WRONG WITH THE CHROMOSOME LENGTH');
-
+[ym,~] = size(crossOverChromosome);
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
-    for k = 1:1:m
+    for k = 1:1:ym
         for j=1:1:mk
             % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
                 for i=1:1:n 
@@ -121,7 +120,7 @@ assert(checkn==n,'SOMETHING IS WRONG WITH THE CHROMOSOME LENGTH');
                 % THIS BLOCK DEFINES THE SQUARED 
                 % SUMMATION TERM IN THE DENOMINATOR 
                 for l=1:1:n
-                    denom=denom+binChromArray(kj,l);
+                    denom=denom+binChromArray(k,j,l);
                 end
                 denom=(n-denom)^2;
                 % EXTERNAL SUMMATION 

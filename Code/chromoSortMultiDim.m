@@ -44,11 +44,13 @@ mk=0;
 for i=1:1:R
     % CALL FORMATTING FUNCTION FOR EACH 1xN CHROMOSOME VECTOR
     % THE OUTPUT IS A MxN ARRAY
-    [~,binArr,mki,~]=chromoSort(chromeArray(i,:));    
+    [~,binArr,mki,m]=chromoSort(chromeArray(i,:));    
     % INSERT THE R2 ARRAY INTO A THIRD DIM LAYER OF THE R3 ARRAY. EACH OF
     % THESE THIRD DIM SLICES CORRESPONDS TO A ROW IN THE FUNCTION'S INPUT
     % CHROMOSOME ARRAY
-    multiDimArray(i,1:mki,:)=binArr; 
+    
+    %%% CHAGNGE! : mki SWITCHED TO m
+    multiDimArray(i,1:m,:)=binArr; 
     mk=mk+mki;
 end
     
