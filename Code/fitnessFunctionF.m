@@ -48,29 +48,34 @@ denom=0;
 numo2=0;
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k=1:1:m
-        % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
-            for i=1:1:n 
-                for j=1:1:n
-                    % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
-                    % INCLUDED IN THE DOUBLE SUMMATION
-                    v1=vh(i,j);
-                    v2=vs(i,j);
-                    x1=chromArray(k,i);
-                    x2=chromArray(k,j);
-                    numo2=numo2+(x1*x2*v1*v2);
+        chkRow = sum(chromArray(k,:));
+     
+        if chkRow~=0
+            
+            % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
+                for i=1:1:n 
+                    for j=1:1:n
+                        % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
+                        % INCLUDED IN THE DOUBLE SUMMATION
+                        v1=vh(i,j);
+                        v2=vs(i,j);
+                        x1=chromArray(k,i);
+                        x2=chromArray(k,j);
+                        numo2=numo2+(x1*x2*v1*v2);
+                    end
                 end
-            end
-            numo = numo2;
-            numo2 = 0;
-            % THIS BLOCK DEFINES THE SQUARED 
-            % SUMMATION TERM IN THE DENOMINATOR 
-            for l=1:1:n
-                denom=denom+chromArray(k,l);
-            end
-            denom=(denom)^2;
-            % EXTERNAL SUMMATION 
-            FNumeratorTerm1=FNumeratorTerm1+(numo/denom);
-            denom = 0;
+                numo = numo2;
+                numo2 = 0;
+                % THIS BLOCK DEFINES THE SQUARED 
+                % SUMMATION TERM IN THE DENOMINATOR 
+                for l=1:1:n
+                    denom=denom+chromArray(k,l);
+                end
+                denom=(denom)^2;
+                % EXTERNAL SUMMATION 
+                FNumeratorTerm1=FNumeratorTerm1+(numo/denom);
+                denom = 0;
+        end
     end
 end
 
@@ -90,6 +95,9 @@ denom=0;
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k=1:1:m
+        chkRow = sum(chromArray(k,:));
+        if chkRow~=0
+            
         % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
             for i=1:1:n 
                 for j=1:1:n
@@ -99,7 +107,7 @@ denom=0;
                     v2=vs(i,j);
                     x1=chromArray(k,i);
                     x2=abs(1-(chromArray(k,j)));
-                    numo=numo+(x1*x2*v1*v2);
+                    numo2=numo2+(x1*x2*v1*v2);
                 end
             end
             numo = numo2;
@@ -113,5 +121,6 @@ denom=0;
             % EXTERNAL SUMMATION 
             FNumeratorTerm2=FNumeratorTerm2+(numo/denom);
             denom = 0;
+        end
     end
 end

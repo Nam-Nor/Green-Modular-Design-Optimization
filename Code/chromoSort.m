@@ -61,7 +61,7 @@ function [chromosomeArr,binChromosomeArr,mk,m] = chromoSort(chromosome)
     % TRUE ELEMENTS IN THE COLUMNS OR DOUBLES ~= 0
     
     
-    %COMMENT OUT%% %binChromosomeArr(deleteMask,:)=[];
+    %%binChromosomeArr(deleteMask,:)=[];
     
     chromosomeArr(deleteMask,:)=[];
     % DETERMINE THE PARAMENTER m USED IN LATER CALCULATIONS AS THE NUMBER
