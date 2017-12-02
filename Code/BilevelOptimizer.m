@@ -67,19 +67,19 @@ for i=1:ULiterations
                     Y=GreenModGeneticAlgorithmLL(Y);
                     for l=1:size(Y,1)
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                        f = fitnessFunctionff(vg,Y(l));
+                        f = fitnessFunctionff(vg,Y(l,:));
                         %%%%evaluate beta(Y) %%%%
                         beta=(f-fstar)/(1-fstar);
                         if beta<0
                             break
                         else
-                            F=fitnessFunctionF(vh,vs,Y(l));
+                            F=fitnessFunctionF(vh,vs,Y(l,:));
                             %%%%evaluate alpha(X)%%%%%%
                             alpha=(F-Fstar)/(1-Fstar);
                             if alpha<0
                                 break
                             else
-                                A(j,:)={[alpha],[beta],[F],[f],Y(l)};
+                                A(j,:)={[alpha],[beta],[F],[f],Y(l,:)};
                             end
                         end
                     end
