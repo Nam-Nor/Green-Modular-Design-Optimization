@@ -18,8 +18,8 @@ load Vg.mat;
 load Vh.mat;
 load Vs.mat;
 
-Fstar=0.29;
-fstar=0.17;
+Fstar=0.01;
+fstar=0.01;
 
 components=37;
 ULiterations=2000;

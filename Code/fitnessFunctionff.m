@@ -53,8 +53,12 @@ denom=0;
 
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k = 1:1:ym
+        
         [~,~,mk,~] = chromoSort(crossOverChromosome(k,:));
         for j=1:1:mk
+            chkVec = sum(binChromArray(k,j,:));
+            if chkVec~=0
+                
             % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
                 for i=1:1:n 
                     for l=1:1:n
@@ -77,6 +81,7 @@ denom=0;
                 ffNumeratorTerm1=ffNumeratorTerm1+(numo/denom);
                 numo=0;
                 denom=0;
+            end
         end
     end
 end
@@ -106,6 +111,8 @@ denom=0;
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k = 1:1:ym
         for j=1:1:mk
+            chkVec = sum(binChromArray(k,j,:));
+            if chkVec~=0
             % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
                 for i=1:1:n 
                     for l=1:1:n
@@ -127,6 +134,7 @@ denom=0;
                 ffNumeratorTerm2=ffNumeratorTerm2+(numo/denom);
                 denom=0;
                 numo=0;
+            end
         end
     end
 end
