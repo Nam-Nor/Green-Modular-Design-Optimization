@@ -19,7 +19,7 @@ load Vh.mat;
 load Vs.mat;
 
 Fstar=0.01;
-fstar=0.01;
+fstar=0.006;
 
 components=37;
 ULiterations=2000;
@@ -29,7 +29,7 @@ population=50;
 m=round(sqrt(components)); %inital max number of modules
 
 % Store the alpha, beta (>=0) and the corresponding chromosome
-A=cell(population,5); 
+A=cell(1,5); 
 
 ULmembers = randi(m,[population components]);
 LLmembers = zeros(population, components);
@@ -47,7 +47,7 @@ for i=1:ULiterations
         ULscores(j,1)=F;
         alpha=(F-Fstar)/(1-Fstar);
         %%%%Evaluate Alpha(X)%%%
-        if alpha<0
+        if alpha<0 || ~isnan(alpha)
             break
         else
             binY=binX;
@@ -55,7 +55,7 @@ for i=1:ULiterations
             f=fitnessFunctionff(vg,Y);
             beta=(f-fstar)/(1-fstar);
             %%%%Evaluate Beta(Y)%%%
-            if beta>=0
+            if beta>=0 || ~isnan(beta)
                 A(j,:)={[alpha],[beta],[F],[f],ULmembers(j,:)};
             else
                 LLmembers(1:size(Y,1),1)=f;
@@ -70,16 +70,17 @@ for i=1:ULiterations
                         f = fitnessFunctionff(vg,Y(l,:));
                         %%%%evaluate beta(Y) %%%%
                         beta=(f-fstar)/(1-fstar);
-                        if beta<0
+                        if beta<0 || ~isnan(beta)
                             break
                         else
                             F=fitnessFunctionF(vh,vs,Y(l,:));
                             %%%%evaluate alpha(X)%%%%%%
                             alpha=(F-Fstar)/(1-Fstar);
-                            if alpha<0
+                            if alpha<0 || ~isnan(alpha)
                                 break
                             else
-                                A(j,:)={[alpha],[beta],[F],[f],Y(l,:)};
+                                [currentAPop,~]=size(A);
+                                A(currentAPop+1,:)={[alpha],[beta],[F],[f],Y(l,:)};
                             end
                         end
                     end
