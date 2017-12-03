@@ -24,7 +24,7 @@ fstar=0.006;
 components=37;
 ULiterations=2000;
 LLiterations=2000;
-population=50;
+population=700;
 
 m=round(sqrt(components)); %inital max number of modules
 
