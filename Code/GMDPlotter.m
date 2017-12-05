@@ -41,11 +41,13 @@ varname = input('PLEASE INPUT THE VARIABLE FILE NAME:  ','s');
 figure
 subplot(1,2,1)
 plot(alpha,beta,'*')
+grid on
 title('Alpha v. Beta')
 xlabel('Technical System Satisfactory Degree (Alpha)');
 ylabel('Material Reuse Satisfactory Degree (Beta)');
 subplot(1,2,2)
 plot(F,f,'*')
+grid on
 title('F v. f')
 xlabel('Technical System Modularity (TSM) Measure F');
 ylabel('Material Reuse Modularity (MRM) Measure f');

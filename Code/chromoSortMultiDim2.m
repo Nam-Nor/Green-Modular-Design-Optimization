@@ -1,4 +1,4 @@
-function [multiDimArray,mk] = chromoSortMultiDim(chromeArray)
+function [multiDimArray,mk] = chromoSortMultiDim2(chromeArray)
 % CHROMOSOME OUTPUT FORMATTER FOR OUTPUT OF GENETIC ALGORITHM TO BE 
 % PROCESSED BY THE FITNESS FUNCTION f(X). 
 % THE FUNCTION IS USED IN THE FALL 2017 ME 6101 FINAL GROUP PROJECT ON
@@ -38,7 +38,7 @@ function [multiDimArray,mk] = chromoSortMultiDim(chromeArray)
 % n IS THE NUMBER OF COMPONENTS
 [R,n]=size(chromeArray); 
 % INITIALIZE THE OUTPUT AS A R3 ARRAY
-multiDimArray=zeros(1,1,n);
+multiDimArray=zeros(n,n,n);
 mk=0;
 % LOOP THROUGH THE ROWS OF THE INPUT ARRAY
 for i=1:1:R
@@ -50,7 +50,7 @@ for i=1:1:R
     % CHROMOSOME ARRAY
     
     %%% CHAGNGE! : mki SWITCHED TO m
-    multiDimArray(i,1:mk,:)=binArr; 
+    multiDimArray(i,1:m,:)=binArr; 
     mk=mk+mki;
 end
     

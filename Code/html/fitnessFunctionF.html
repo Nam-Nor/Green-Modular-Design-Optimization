@@ -1,0 +1,329 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>fitnessFunctionF</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-12-04"><meta name="DC.source" content="fitnessFunctionF.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> FX = fitnessFunctionF(vh,vs,chromosome)
+<span class="comment">% THIS FUNCTION CALCULATES THE FITNESS FUNCTION F(X) DESIGN</span>
+<span class="comment">% MEASURE. THIS FUNCTION SHOULD BE USED THROUGH THE BILEVEL OPTIMIZATION</span>
+<span class="comment">% ALONG WITH THE SECOND FITNESS FUNCTION f(X)</span>
+<span class="comment">% FOR THE FORMULA, SEE EQUATION 8</span>
+<span class="comment">%</span>
+<span class="comment">% INPUT:  [NxN DOUBLE]  CCF ARRAY DEFINED AS v^s IN THE EQUATION</span>
+<span class="comment">%         [NxN DOUBLE]  CCF ARRAY DEFINED AS v^h IN THE EQUATION</span>
+<span class="comment">%         [1xN DOUBLE]  DESIGN CHROMOSOME VECTOR</span>
+<span class="comment">% OUTPUT: [1x1 DOUBLE]  FIRST NUMERATOR TERM CALCULATED FOR THE F(X)</span>
+<span class="comment">%                       DESIGN MEASUREMENT</span>
+<span class="comment">%</span>
+<span class="comment">% ENGINEERS: JAMES S COLLINS</span>
+<span class="comment">%            BEN DUSSALT</span>
+<span class="comment">%            NAMKHA NORSANG</span>
+<span class="comment">%            NISHANTH KATHIRVEL</span>
+<span class="comment">%</span>
+<span class="comment">% PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT</span>
+<span class="comment">% DATE: NOVEMBER 2017</span>
+<span class="comment">% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+ [~,binChromosomeArray,~,m]=chromoSort(chromosome);
+
+ [FNT1,m]=FNumerator1(vh,vs,m,binChromosomeArray);
+ [FNT2,~]=FNumerator2(vh,vs,m,binChromosomeArray);
+
+ FX=(FNT1-FNT2)/m;
+
+
+
+
+<span class="keyword">end</span>
+
+
+<span class="keyword">function</span> [FNumeratorTerm1,numtest1] = FNumerator1(vh,vs,m,chromArray)
+<span class="comment">% THIS FUNCTION CALCULATES THE FIRST NUMERATOR TERM OF THE F(X) DESIGN</span>
+<span class="comment">% MEASURE. THIS FUNCTION ALONG WITH FNumerator2 SHOULD BE USED THROUGH THE</span>
+<span class="comment">% BILEVEL OPTIMIZATION</span>
+<span class="comment">% FOR THE FORMULA, SEE EQUATION 8</span>
+<span class="comment">%</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">% SETTING THE COMPONENT NUMBER</span>
+n=37;
+<span class="comment">% DECLARING ITERATION VARIBLES</span>
+FNumeratorTerm1=0;
+numo=0;
+denom=0;
+numo2=0;
+
+numtest1=[];
+<span class="comment">% STARTING FIRST, EXTERIOR SUMMATION FOR LOOP</span>
+    <span class="keyword">for</span> k=1:1:m
+        chkRow = sum(chromArray(k,:));
+
+        <span class="keyword">if</span> chkRow~=0
+
+            <span class="comment">% TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM</span>
+                <span class="keyword">for</span> i=1:1:n
+                    <span class="keyword">for</span> j=1:1:n
+                        <span class="comment">% PRODUCT OF INDEXED VALUES ON THE NUMERATOR</span>
+                        <span class="comment">% INCLUDED IN THE DOUBLE SUMMATION</span>
+                        v1=vh(i,j);
+                        v2=vs(i,j);
+                        x1=chromArray(k,i);
+                        x2=chromArray(k,j);
+                    <span class="keyword">end</span>
+                <span class="keyword">end</span>
+                numo = numo2;
+                numo2 = 0;
+                <span class="comment">% THIS BLOCK DEFINES THE SQUARED</span>
+                <span class="comment">% SUMMATION TERM IN THE DENOMINATOR</span>
+                <span class="keyword">for</span> l=1:1:n
+                    denom=denom+chromArray(k,l);
+                <span class="keyword">end</span>
+                denom=(denom)^2;
+                <span class="comment">% EXTERNAL SUMMATION</span>
+                FNumeratorTerm1=FNumeratorTerm1+(numo/denom);
+                denom = 0;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [FNumeratorTerm2,numotest2] = FNumerator2(vh,vs,m,chromArray)
+<span class="comment">% THIS FUNCTION CALCULATES THE SECOND NUMERATOR TERM OF THE F(X) DESIGN</span>
+<span class="comment">% MEASURE. THIS FUNCTION ALONG WITH FNumerator2 SHOULD BE USED THROUGH THE</span>
+<span class="comment">% BILEVEL OPTIMIZATION</span>
+<span class="comment">% FOR THE FORMULA, SEE EQUATION 8</span>
+<span class="comment">%</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+n=37; <span class="comment">% SETTING THE COMPONENT NUMBER</span>
+FNumeratorTerm2=0; <span class="comment">% DECLARING ITERATION VARIBLES</span>
+numo2=0;
+denom=0;
+
+numotest2=[];
+<span class="comment">% STARTING FIRST, EXTERIOR SUMMATION FOR LOOP</span>
+    <span class="keyword">for</span> k=1:1:m
+        chkRow = sum(chromArray(k,:));
+        <span class="keyword">if</span> chkRow~=0
+
+        <span class="comment">% TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM</span>
+            <span class="keyword">for</span> i=1:1:n
+                <span class="keyword">for</span> j=1:1:n
+                    <span class="comment">% PRODUCT OF INDEXED VALUES ON THE NUMERATOR</span>
+                    <span class="comment">% INCLUDED IN THE DOUBLE SUMMATION</span>
+                    v1=vh(i,j);
+                    v2=vs(i,j);
+                    x1=chromArray(k,i);
+                    x2=abs(1-(chromArray(k,j)));
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            numo = numo2;
+            numo2 = 0;
+            <span class="comment">% THIS BLOCK DEFINES THE SQUARED</span>
+            <span class="comment">% SUMMATION TERM IN THE DENOMINATOR</span>
+            <span class="keyword">for</span> l=1:1:n
+                denom=denom+chromArray(k,l);
+            <span class="keyword">end</span>
+            denom=(n-denom)^2;
+            <span class="comment">% EXTERNAL SUMMATION</span>
+            FNumeratorTerm2=FNumeratorTerm2+(numo/denom);
+            denom = 0;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+function FX = fitnessFunctionF(vh,vs,chromosome)
+% THIS FUNCTION CALCULATES THE FITNESS FUNCTION F(X) DESIGN
+% MEASURE. THIS FUNCTION SHOULD BE USED THROUGH THE BILEVEL OPTIMIZATION 
+% ALONG WITH THE SECOND FITNESS FUNCTION f(X)
+% FOR THE FORMULA, SEE EQUATION 8
+%
+% INPUT:  [NxN DOUBLE]  CCF ARRAY DEFINED AS v^s IN THE EQUATION
+%         [NxN DOUBLE]  CCF ARRAY DEFINED AS v^h IN THE EQUATION 
+%         [1xN DOUBLE]  DESIGN CHROMOSOME VECTOR
+% OUTPUT: [1x1 DOUBLE]  FIRST NUMERATOR TERM CALCULATED FOR THE F(X) 
+%                       DESIGN MEASUREMENT 
+%
+% ENGINEERS: JAMES S COLLINS
+%            BEN DUSSALT
+%            NAMKHA NORSANG
+%            NISHANTH KATHIRVEL
+%
+% PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT
+% DATE: NOVEMBER 2017
+% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ [~,binChromosomeArray,~,m]=chromoSort(chromosome); 
+
+ [FNT1,m]=FNumerator1(vh,vs,m,binChromosomeArray);
+ [FNT2,~]=FNumerator2(vh,vs,m,binChromosomeArray);
+ 
+ FX=(FNT1-FNT2)/m;
+ 
+
+ 
+
+end
+
+
+function [FNumeratorTerm1,numtest1] = FNumerator1(vh,vs,m,chromArray)
+% THIS FUNCTION CALCULATES THE FIRST NUMERATOR TERM OF THE F(X) DESIGN
+% MEASURE. THIS FUNCTION ALONG WITH FNumerator2 SHOULD BE USED THROUGH THE
+% BILEVEL OPTIMIZATION 
+% FOR THE FORMULA, SEE EQUATION 8
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% SETTING THE COMPONENT NUMBER
+n=37; 
+% DECLARING ITERATION VARIBLES
+FNumeratorTerm1=0; 
+numo=0;
+denom=0;    
+numo2=0;
+
+numtest1=[];
+% STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
+    for k=1:1:m
+        chkRow = sum(chromArray(k,:));
+     
+        if chkRow~=0
+            
+            % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
+                for i=1:1:n 
+                    for j=1:1:n
+                        % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
+                        % INCLUDED IN THE DOUBLE SUMMATION
+                        v1=vh(i,j);
+                        v2=vs(i,j);
+                        x1=chromArray(k,i);
+                        x2=chromArray(k,j);
+                    end
+                end
+                numo = numo2;
+                numo2 = 0;
+                % THIS BLOCK DEFINES THE SQUARED 
+                % SUMMATION TERM IN THE DENOMINATOR 
+                for l=1:1:n
+                    denom=denom+chromArray(k,l);
+                end
+                denom=(denom)^2;
+                % EXTERNAL SUMMATION 
+                FNumeratorTerm1=FNumeratorTerm1+(numo/denom);
+                denom = 0;
+        end
+    end
+end
+
+function [FNumeratorTerm2,numotest2] = FNumerator2(vh,vs,m,chromArray)
+% THIS FUNCTION CALCULATES THE SECOND NUMERATOR TERM OF THE F(X) DESIGN
+% MEASURE. THIS FUNCTION ALONG WITH FNumerator2 SHOULD BE USED THROUGH THE
+% BILEVEL OPTIMIZATION 
+% FOR THE FORMULA, SEE EQUATION 8
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+n=37; % SETTING THE COMPONENT NUMBER
+FNumeratorTerm2=0; % DECLARING ITERATION VARIBLES
+numo2=0;
+denom=0;    
+
+numotest2=[];
+% STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
+    for k=1:1:m
+        chkRow = sum(chromArray(k,:));
+        if chkRow~=0
+            
+        % TWO NESTED SUMMATION THAT MAKE UP THE NUMERATOR FOR THE TERM
+            for i=1:1:n 
+                for j=1:1:n
+                    % PRODUCT OF INDEXED VALUES ON THE NUMERATOR 
+                    % INCLUDED IN THE DOUBLE SUMMATION
+                    v1=vh(i,j);
+                    v2=vs(i,j);
+                    x1=chromArray(k,i);
+                    x2=abs(1-(chromArray(k,j)));
+                end
+            end
+            numo = numo2;
+            numo2 = 0;
+            % THIS BLOCK DEFINES THE SQUARED 
+            % SUMMATION TERM IN THE DENOMINATOR 
+            for l=1:1:n
+                denom=denom+chromArray(k,l);
+            end
+            denom=(n-denom)^2;
+            % EXTERNAL SUMMATION 
+            FNumeratorTerm2=FNumeratorTerm2+(numo/denom);
+            denom = 0;
+        end
+    end
+end
+##### SOURCE END #####
+--></body></html>

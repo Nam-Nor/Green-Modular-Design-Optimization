@@ -14,18 +14,25 @@
 clear all
 clc
  
-load Vg.mat;
-load Vh.mat;
-load Vs.mat;
+% load Vg.mat;
+% load Vh.mat;
+% load Vs.mat;
+load('JiaoVssss.mat')
+
+
+vg=VgJiao;
+vh=VhJiao;
+vs=VsJiao;
+
 
 
 Fstar=0.01;
 fstar=0.006;
 
-components=37;
-ULiterations=2000;
-LLiterations=2000;
-population=700;
+components=22;
+ULiterations=200;
+LLiterations=200;
+population=500;
 
 m=round(sqrt(components)); %inital max number of modules
 

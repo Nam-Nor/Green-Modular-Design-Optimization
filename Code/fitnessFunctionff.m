@@ -41,7 +41,7 @@ function [ffNumeratorTerm1,mk] = ffNumerator1(vg,crossOverChromosome)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % SETTING THE COMPONENT NUMBER
-n=37; 
+n=22; 
 % DECLARING ITERATION VARIABLES
 ffNumeratorTerm1=0; 
 numo=0;
@@ -97,7 +97,7 @@ function [ffNumeratorTerm2,mk] = ffNumerator2(vg,crossOverChromosome)
 
 
 % SETTING THE COMPONENT NUMBER
-n=37; 
+n=22; 
 % DECLARING ITERATION VARIBLES
 ffNumeratorTerm2=0; 
 numo=0;

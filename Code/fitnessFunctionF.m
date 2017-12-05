@@ -23,15 +23,18 @@ function FX = fitnessFunctionF(vh,vs,chromosome)
 
  [~,binChromosomeArray,~,m]=chromoSort(chromosome); 
 
- FNT1=FNumerator1(vh,vs,m,binChromosomeArray);
- FNT2=FNumerator2(vh,vs,m,binChromosomeArray);
+ [FNT1,m]=FNumerator1(vh,vs,m,binChromosomeArray);
+ [FNT2,~]=FNumerator2(vh,vs,m,binChromosomeArray);
  
  FX=(FNT1-FNT2)/m;
+ 
+
+ 
 
 end
 
 
-function FNumeratorTerm1 = FNumerator1(vh,vs,m,chromArray)
+function [FNumeratorTerm1,numtest1] = FNumerator1(vh,vs,m,chromArray)
 % THIS FUNCTION CALCULATES THE FIRST NUMERATOR TERM OF THE F(X) DESIGN
 % MEASURE. THIS FUNCTION ALONG WITH FNumerator2 SHOULD BE USED THROUGH THE
 % BILEVEL OPTIMIZATION 
@@ -46,6 +49,8 @@ FNumeratorTerm1=0;
 numo=0;
 denom=0;    
 numo2=0;
+
+numtest1=[];
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k=1:1:m
         chkRow = sum(chromArray(k,:));
@@ -61,7 +66,6 @@ numo2=0;
                         v2=vs(i,j);
                         x1=chromArray(k,i);
                         x2=chromArray(k,j);
-                        numo2=numo2+(x1*x2*v1*v2);
                     end
                 end
                 numo = numo2;
@@ -79,7 +83,7 @@ numo2=0;
     end
 end
 
-function FNumeratorTerm2 = FNumerator2(vh,vs,m,chromArray)
+function [FNumeratorTerm2,numotest2] = FNumerator2(vh,vs,m,chromArray)
 % THIS FUNCTION CALCULATES THE SECOND NUMERATOR TERM OF THE F(X) DESIGN
 % MEASURE. THIS FUNCTION ALONG WITH FNumerator2 SHOULD BE USED THROUGH THE
 % BILEVEL OPTIMIZATION 
@@ -89,10 +93,10 @@ function FNumeratorTerm2 = FNumerator2(vh,vs,m,chromArray)
 
 n=37; % SETTING THE COMPONENT NUMBER
 FNumeratorTerm2=0; % DECLARING ITERATION VARIBLES
-numo=0;
 numo2=0;
 denom=0;    
 
+numotest2=[];
 % STARTING FIRST, EXTERIOR SUMMATION FOR LOOP
     for k=1:1:m
         chkRow = sum(chromArray(k,:));
@@ -107,7 +111,6 @@ denom=0;
                     v2=vs(i,j);
                     x1=chromArray(k,i);
                     x2=abs(1-(chromArray(k,j)));
-                    numo2=numo2+(x1*x2*v1*v2);
                 end
             end
             numo = numo2;

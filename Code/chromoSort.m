@@ -41,11 +41,11 @@ function [chromosomeArr,binChromosomeArr,mk,m] = chromoSort(chromosome)
     % IDENTIFING MAXIMUM MODULE NUMBER IN CHROMOSOME AND DECLARING THE
     % OUTPUT LOGICAL ARRAY
     m=max(chromosome);
-    binChromosomeArr=false(m,L);
-    chromosomeArr=zeros(m,L);
+    binChromosomeArr=false(L,L);
+    chromosomeArr=zeros(L,L);
     % FOR LOOP TO SEPAREATE GENES INTO INDIVIDUAL ROWS MARKING DIFFERENT
     % COLUMNS
-    for i=1:m
+    for i=1:L
         % GENERATING LOGICAL MASK ROWS
         binChromosomeArr(i,:)=chromosome==i; 
         % PORTION TO ASSIGN THE DOUBLE ARRAY THE SEPARATE VALUES
@@ -55,7 +55,8 @@ function [chromosomeArr,binChromosomeArr,mk,m] = chromoSort(chromosome)
     end
     % CREATION OF LOGICAL MASK IDENTIFING
     % ROWS CONTAINING ALL FALSE INDICES
-    deleteMask=~any(binChromosomeArr,2); 
+    
+    %deleteMask=~any(binChromosomeArr,2); 
    
     % USE THE LOGICAL MASK TO IDENTIFY AND ISOLATE ALL THE ROWS CONTAINING
     % TRUE ELEMENTS IN THE COLUMNS OR DOUBLES ~= 0
@@ -63,11 +64,13 @@ function [chromosomeArr,binChromosomeArr,mk,m] = chromoSort(chromosome)
     
     %%binChromosomeArr(deleteMask,:)=[];
     
-    chromosomeArr(deleteMask,:)=[];
+    %chromosomeArr(deleteMask,:)=[];
+    
     % DETERMINE THE PARAMENTER m USED IN LATER CALCULATIONS AS THE NUMBER
     % OF FILLED ROWS IN THE CHROMOSOME ARRAY
     [mk,~]=size(chromosomeArr);
-    % CONVERT THE LOGICAL TO TYPE DOUBLE FOR FITNESS FUNCTION CALCULATION                               
+    % CONVERT THE LOGICAL TO TYPE DOUBLE FOR FITNESS FUNCTION CALCULATION 
+    binChromosomeArr=chromosomeArr~=0;
     binChromosomeArr=double(binChromosomeArr); 
 
 end
