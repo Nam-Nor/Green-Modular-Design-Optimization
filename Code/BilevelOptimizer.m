@@ -38,8 +38,6 @@ ULscores = randi(10,[population 1]);
 
 for i=1:ULiterations
     % Perform CGA on ULmembers
-    % CHANGED!: specified the name for the genetic algorithm performed here
-    % to be Upper Level (UL)
     ULmembers=GreenModGeneticAlgorithmUL(ULmembers,ULscores);
     % now we have a new population of ULCs
     for j=1:population
@@ -63,11 +61,8 @@ for i=1:ULiterations
                 
                 for k=1:LLiterations
                     %%%%%perform CGA on Y%%%%%
-                    % CHANGED! : new function introduced for lower level
-                    % optimization where the fitness performance is not
-                    % taken into account.
                     Y=GreenModGeneticAlgorithmLL(Y);
-                    %%for l=1:size(Y,1)
+                    for l=1:size(Y,1)
                         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                         f = fitnessFunctionff(vg,Y);
                         %%%%evaluate beta(Y) %%%%
@@ -86,7 +81,7 @@ for i=1:ULiterations
                                 A(currentAPop+1,:)={[alpha],[beta],[F],[f],Y(l,:)};
                             end
                         end
-                    %%end
+                    end
                 end
             end
         end

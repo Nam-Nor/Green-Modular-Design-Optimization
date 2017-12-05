@@ -49,7 +49,6 @@ for i=1:1:R
     % THESE THIRD DIM SLICES CORRESPONDS TO A ROW IN THE FUNCTION'S INPUT
     % CHROMOSOME ARRAY
     
-    %%% CHAGNGE! : mki SWITCHED TO m
     multiDimArray(i,1:mk,:)=binArr; 
     mk=mk+mki;
 end

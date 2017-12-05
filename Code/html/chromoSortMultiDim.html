@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">CHAGNGE! : mki SWITCHED TO m</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [multiDimArray,mk] = chromoSortMultiDim(chromeArray)
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [multiDimArray,mk] = chromoSortMultiDim(chromeArray)
 <span class="comment">% CHROMOSOME OUTPUT FORMATTER FOR OUTPUT OF GENETIC ALGORITHM TO BE</span>
 <span class="comment">% PROCESSED BY THE FITNESS FUNCTION f(X).</span>
 <span class="comment">% THE FUNCTION IS USED IN THE FALL 2017 ME 6101 FINAL GROUP PROJECT ON</span>
@@ -116,7 +116,8 @@ mk=0;
     <span class="comment">% INSERT THE R2 ARRAY INTO A THIRD DIM LAYER OF THE R3 ARRAY. EACH OF</span>
     <span class="comment">% THESE THIRD DIM SLICES CORRESPONDS TO A ROW IN THE FUNCTION'S INPUT</span>
     <span class="comment">% CHROMOSOME ARRAY</span>
-</pre><h2 id="2">CHAGNGE! : mki SWITCHED TO m</h2><pre class="codeinput">    multiDimArray(i,1:mk,:)=binArr;
+
+    multiDimArray(i,1:mk,:)=binArr;
     mk=mk+mki;
 <span class="keyword">end</span>
 
@@ -174,7 +175,6 @@ for i=1:1:R
     % THESE THIRD DIM SLICES CORRESPONDS TO A ROW IN THE FUNCTION'S INPUT
     % CHROMOSOME ARRAY
     
-    %%% CHAGNGE! : mki SWITCHED TO m
     multiDimArray(i,1:mk,:)=binArr; 
     mk=mk+mki;
 end

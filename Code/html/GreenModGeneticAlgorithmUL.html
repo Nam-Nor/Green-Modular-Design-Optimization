@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>GreenModGeneticAlgorithmLL</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-12-05"><meta name="DC.source" content="GreenModGeneticAlgorithmLL.m"><style type="text/css">
+      --><title>GreenModGeneticAlgorithmUL</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-12-05"><meta name="DC.source" content="GreenModGeneticAlgorithmUL.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,18 +66,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [newGen] = GreenModGeneticAlgorithmLL(prevGen)
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [newGen] = GreenModGeneticAlgorithmUL(prevGen,prevGenScores)
 <span class="comment">% GENETIC ALGORITHM TO PROCESS A GIVEN SET OF CHROMOSOMES DEFINING A</span>
 <span class="comment">% POPULATION AND USE FITNESS SCORES TO PRODUCE A NEW GENERATION WITH</span>
 <span class="comment">% CROSSOVER AND MUTATION ALTERATIONS.</span>
 <span class="comment">%</span>
-<span class="comment">%   NOTE: THIS IS USED IN THE LOWER LEVEL OPTIMIZATION!!!</span>
-<span class="comment">%         USE GreenModGeneticAlgorithmUL.m FOR THE UPPER LEVEL CHROMOSOME</span>
-<span class="comment">%         OPTIMIZATION</span>
-<span class="comment">%         THE ONLY DIFFERENCE BETWEEN THIS SCRIPT AND</span>
-<span class="comment">%         GreenModGeneticAlgorithmUL.m IS THAT IT DOES NOT TAKE INTO</span>
-<span class="comment">%         ACCOUNT FITNESS SCORES FOR THE CROSSOVER. CROSSOVER SELECTION IS</span>
-<span class="comment">%         THEREFORE DONE RANDOMLY</span>
+<span class="comment">%   NOTE: THIS SHOULD BE USED WITH THE UPPER LEVEL OPTIMIZATION!</span>
+<span class="comment">%         UNLIKE GreenModGeneticAlgorithmLL.m THIS CODE CONSIDERES THE</span>
+<span class="comment">%         FITNESS PERFORMANCE OF INDIVIDUALES BY THE SECOND INPUT OF</span>
+<span class="comment">%         SCORES (FROM THE F(X) FITNESS FUNCTION)</span>
 <span class="comment">%</span>
 <span class="comment">%   INPUTS:</span>
 <span class="comment">%       [PxN DOUBLE] ARRAY OF DESIGN VECTORS DEFINING A POPULATION FOR A</span>
@@ -100,10 +97,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <span class="comment">% LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-<span class="comment">% IDENTIFY THE NUMBER OF INDIVIDUALS IN THE POPULATION</span>
-nParents = size(prevGen,1);
-<span class="comment">% RANDOMLY DETERMINE THE SELECTION INDEX</span>
-mateIndex = randi(nParents,[nParents,1]);
+<span class="comment">% SCALE THE FITNESS FUNCTION SCORES</span>
+expectation = GreenModFitScalingRank(prevGenScores);
+<span class="comment">% DERIVE THE CORRESPONDING INDEX VECTOR FOR CROSSOVER</span>
+mateIndex = GreenModSelection(expectation);
 <span class="comment">% CALL THE CROSSOVER FUNCTION TO MATE DIFFERENT INDIVIDUALS IN ROWS OF THE</span>
 <span class="comment">% POPULATION ARRAY</span>
 newGen = GreenModCrossoverScattered(prevGen,mateIndex);
@@ -112,18 +109,15 @@ newGen = GreenModMutation(newGen);
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function [newGen] = GreenModGeneticAlgorithmLL(prevGen)
+function [newGen] = GreenModGeneticAlgorithmUL(prevGen,prevGenScores)
 % GENETIC ALGORITHM TO PROCESS A GIVEN SET OF CHROMOSOMES DEFINING A
 % POPULATION AND USE FITNESS SCORES TO PRODUCE A NEW GENERATION WITH
 % CROSSOVER AND MUTATION ALTERATIONS.
 %
-%   NOTE: THIS IS USED IN THE LOWER LEVEL OPTIMIZATION!!!
-%         USE GreenModGeneticAlgorithmUL.m FOR THE UPPER LEVEL CHROMOSOME
-%         OPTIMIZATION
-%         THE ONLY DIFFERENCE BETWEEN THIS SCRIPT AND 
-%         GreenModGeneticAlgorithmUL.m IS THAT IT DOES NOT TAKE INTO
-%         ACCOUNT FITNESS SCORES FOR THE CROSSOVER. CROSSOVER SELECTION IS
-%         THEREFORE DONE RANDOMLY
+%   NOTE: THIS SHOULD BE USED WITH THE UPPER LEVEL OPTIMIZATION!
+%         UNLIKE GreenModGeneticAlgorithmLL.m THIS CODE CONSIDERES THE
+%         FITNESS PERFORMANCE OF INDIVIDUALES BY THE SECOND INPUT OF 
+%         SCORES (FROM THE F(X) FITNESS FUNCTION)
 %
 %   INPUTS:
 %       [PxN DOUBLE] ARRAY OF DESIGN VECTORS DEFINING A POPULATION FOR A
@@ -146,10 +140,10 @@ function [newGen] = GreenModGeneticAlgorithmLL(prevGen)
 % LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ATL, GA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% IDENTIFY THE NUMBER OF INDIVIDUALS IN THE POPULATION
-nParents = size(prevGen,1);
-% RANDOMLY DETERMINE THE SELECTION INDEX
-mateIndex = randi(nParents,[nParents,1]);
+% SCALE THE FITNESS FUNCTION SCORES 
+expectation = GreenModFitScalingRank(prevGenScores);
+% DERIVE THE CORRESPONDING INDEX VECTOR FOR CROSSOVER 
+mateIndex = GreenModSelection(expectation);
 % CALL THE CROSSOVER FUNCTION TO MATE DIFFERENT INDIVIDUALS IN ROWS OF THE
 % POPULATION ARRAY
 newGen = GreenModCrossoverScattered(prevGen,mateIndex);

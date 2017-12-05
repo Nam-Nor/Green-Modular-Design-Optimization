@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>GreenModMutation</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-12-05"><meta name="DC.source" content="GreenModMutation.m"><style type="text/css">
+      --><title>GreenModFitScalingRank</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-12-05"><meta name="DC.source" content="GreenModFitScalingRank.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,114 +66,82 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> childrenPostMutation = GreenModMutation(children)
-<span class="comment">%   INTRODUCES RANDOM MUTATION INTO THE ARRAY OF CHROMOSOMES AFTER</span>
-<span class="comment">%   SELECTION AND CROSSOVER. MUTATED GENES ARE RANDOMLY DISTRIBUTED OVER</span>
-<span class="comment">%   THE CHROMOSOME.</span>
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> expectation = GreenModFitScalingRank(scores)
+<span class="comment">%   RANK BASED FITNESS SCALING. SCALES THE Mx1 SCORES FROM THE F(X) AND</span>
+<span class="comment">%   f(X) FITNESS FUNCTION TO READABLE A READABLE FORMAT FOR THE SELECTION</span>
+<span class="comment">%   FUNCTION GreenModSelection.m.</span>
 <span class="comment">%</span>
-<span class="comment">%   [MxN DOUBLE] = GreenModMutation([MxN DOUBLE]</span>
+<span class="comment">%   [Mx1 DOUBLE] = GreenModFitScalingRank([Mx1 DOUBLE],</span>
 <span class="comment">%</span>
 <span class="comment">%   INPUTS:</span>
-<span class="comment">%       children : ARRAY OF POPULATION CHROMOSOMES AFTER SELECTION AND</span>
-<span class="comment">%       CROSSOVER SEQUENCES HAVE BEEN IMPLEMENTED</span>
+<span class="comment">%       scores : VECTOR OF NUMBERS CORRESPONDING TO THE RESULTS OF EACH</span>
+<span class="comment">%       CHROMOSOME (ROW) EVALUATED BY THE FITNESS FUNCTIONS F(X) OR f(X)</span>
 <span class="comment">%</span>
 <span class="comment">%   OUTPUTS:</span>
-<span class="comment">%       childrenPostMutation : RESULT ARRAY OF CHROMOSOME VECTORS AFTER</span>
-<span class="comment">%       RANDOM MUTATION</span>
+<span class="comment">%       expectation : VECTOR OF SCALED RESULTS TO THEN BE INPUT INTO THE</span>
+<span class="comment">%       SELECTION FUNCTION GreenModSelection.m</span>
+<span class="comment">%</span>
+<span class="comment">%   NOTE: IT IS ASSUMED THAT THE SCORES ARE MEANT TO BE MAXIMIZED FOR</span>
+<span class="comment">%   FUTURE GENERATIONS - IE, ASCENDING SCORES CORRESPOND TO ASCENDING</span>
+<span class="comment">%   LEVELS OF FITNESS.</span>
 <span class="comment">%</span>
 <span class="comment">%   ENGINEERS: JAMES COLLINS &amp; NAMKHA NORSANG</span>
 <span class="comment">%   PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT</span>
 <span class="comment">%   DATE: NOVEMBER 2017</span>
 <span class="comment">%   LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ALT, GA</span>
 <span class="comment">%</span>
-<span class="comment">%   NOTE: THIS FUNCTION IS BASED ON MATLAB'S mutationuniform.m FUNCTION</span>
+<span class="comment">%   NOTE: THIS FUNCTION IS BASED ON MATLAB'S fitScalingrank.m FUNCTION</span>
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-    [PopRow,chromosomeLength] = size(children);
-    <span class="comment">% SET 5% MUTATION RATE</span>
-    mutationRate = 0.05;
 
-    <span class="comment">% PERFORM MUTATION EVALUATION OVER ALL CHILDREN</span>
-    <span class="keyword">for</span> i=1:PopRow
-        <span class="comment">% RANDOMLY DETERMINE THE INDICES THAT COULD BE SELECTED FOR A</span>
-        <span class="comment">% MUTATION</span>
-        mutationPoints = find(rand(1,chromosomeLength)<span class="keyword">...</span>
-            &lt; mutationRate);
-            <span class="comment">% LOOP THROUGH THE SELECTED MUTATION POINTS TO DETERMINE NEW</span>
-            <span class="comment">% VALUES</span>
-            <span class="keyword">for</span> j=mutationPoints
-                <span class="comment">% DERIVE A RANDOM NEW ELEMENT VALUE BETWEEN 1-37</span>
-                <span class="comment">% IE BETWEEN 1 AND 37 COMPONENTS IN THE DESIGN VECTOR</span>
-                mutValue = randi(chromosomeLength);
-                <span class="comment">% IF THE RANDOMLY DETERMINED MUTATION ELEMENT VALUE IS THE</span>
-                <span class="comment">% SAME AS THE EXISTING ELEMENT, REDO UNTIL A DIFFERENT</span>
-                <span class="comment">% VALUE IS REACHED</span>
-                <span class="keyword">while</span> mutValue == children(i,j)
-                    mutValue = randi(chromosomeLength);
-                <span class="keyword">end</span>
-                <span class="comment">% ASSIGN NEW VALUE</span>
-                children(i,j) = mutValue;
-            <span class="keyword">end</span>
-    <span class="keyword">end</span>
-    <span class="comment">% INITIALIZE OUTPUT FROM MODFIED INPUT ARRAY</span>
-    childrenPostMutation = children;
-<span class="keyword">end</span>
+[nParents,~] = size(scores);
+scores = scores(:);
+[~,i] = sort(scores);
+
+expectation = zeros(size(scores));
+expectation(i) = 1 ./ ((1:length(scores)) .^ 0.5);
+
+expectation = nParents * expectation ./ sum(expectation);
 </pre><p class="footer">Copyright 2003-2015 The MathWorks, Inc.<br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-function childrenPostMutation = GreenModMutation(children)
-%   INTRODUCES RANDOM MUTATION INTO THE ARRAY OF CHROMOSOMES AFTER 
-%   SELECTION AND CROSSOVER. MUTATED GENES ARE RANDOMLY DISTRIBUTED OVER
-%   THE CHROMOSOME. 
+function expectation = GreenModFitScalingRank(scores)
+%   RANK BASED FITNESS SCALING. SCALES THE Mx1 SCORES FROM THE F(X) AND 
+%   f(X) FITNESS FUNCTION TO READABLE A READABLE FORMAT FOR THE SELECTION
+%   FUNCTION GreenModSelection.m.
+% 
+%   [Mx1 DOUBLE] = GreenModFitScalingRank([Mx1 DOUBLE],
 %
-%   [MxN DOUBLE] = GreenModMutation([MxN DOUBLE]
-%
-%   INPUTS: 
-%       children : ARRAY OF POPULATION CHROMOSOMES AFTER SELECTION AND
-%       CROSSOVER SEQUENCES HAVE BEEN IMPLEMENTED 
+%   INPUTS:
+%       scores : VECTOR OF NUMBERS CORRESPONDING TO THE RESULTS OF EACH
+%       CHROMOSOME (ROW) EVALUATED BY THE FITNESS FUNCTIONS F(X) OR f(X)
 %
 %   OUTPUTS:
-%       childrenPostMutation : RESULT ARRAY OF CHROMOSOME VECTORS AFTER
-%       RANDOM MUTATION
+%       expectation : VECTOR OF SCALED RESULTS TO THEN BE INPUT INTO THE
+%       SELECTION FUNCTION GreenModSelection.m
+%
+%   NOTE: IT IS ASSUMED THAT THE SCORES ARE MEANT TO BE MAXIMIZED FOR
+%   FUTURE GENERATIONS - IE, ASCENDING SCORES CORRESPOND TO ASCENDING
+%   LEVELS OF FITNESS. 
 %
 %   ENGINEERS: JAMES COLLINS & NAMKHA NORSANG
 %   PROJECT: ME 6101 GREEN MODULAR DESIGN GROUP PROJECT
 %   DATE: NOVEMBER 2017
 %   LOCATION: GEORGIA INSTITUTE OF TECHNOLOGY. ALT, GA
 %
-%   NOTE: THIS FUNCTION IS BASED ON MATLAB'S mutationuniform.m FUNCTION
+%   NOTE: THIS FUNCTION IS BASED ON MATLAB'S fitScalingrank.m FUNCTION
 %   Copyright 2003-2015 The MathWorks, Inc.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
    
-    [PopRow,chromosomeLength] = size(children);
-    % SET 5% MUTATION RATE
-    mutationRate = 0.05; 
 
-    % PERFORM MUTATION EVALUATION OVER ALL CHILDREN 
-    for i=1:PopRow
-        % RANDOMLY DETERMINE THE INDICES THAT COULD BE SELECTED FOR A 
-        % MUTATION 
-        mutationPoints = find(rand(1,chromosomeLength)...
-            < mutationRate);
-            % LOOP THROUGH THE SELECTED MUTATION POINTS TO DETERMINE NEW
-            % VALUES 
-            for j=mutationPoints
-                % DERIVE A RANDOM NEW ELEMENT VALUE BETWEEN 1-37
-                % IE BETWEEN 1 AND 37 COMPONENTS IN THE DESIGN VECTOR
-                mutValue = randi(chromosomeLength);
-                % IF THE RANDOMLY DETERMINED MUTATION ELEMENT VALUE IS THE
-                % SAME AS THE EXISTING ELEMENT, REDO UNTIL A DIFFERENT
-                % VALUE IS REACHED
-                while mutValue == children(i,j)
-                    mutValue = randi(chromosomeLength);
-                end
-                % ASSIGN NEW VALUE
-                children(i,j) = mutValue;
-            end
-    end
-    % INITIALIZE OUTPUT FROM MODFIED INPUT ARRAY
-    childrenPostMutation = children;
-end
+[nParents,~] = size(scores);
+scores = scores(:);
+[~,i] = sort(scores);
+
+expectation = zeros(size(scores));
+expectation(i) = 1 ./ ((1:length(scores)) .^ 0.5);
+
+expectation = nParents * expectation ./ sum(expectation);
 
 ##### SOURCE END #####
 --></body></html>
